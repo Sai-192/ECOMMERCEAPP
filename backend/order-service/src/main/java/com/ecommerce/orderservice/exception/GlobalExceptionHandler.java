@@ -36,10 +36,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ValidationErrorResponse> handleValidationExceptions(MethodArgumentNotValidException ex) {
         log.error("Validation error: {}", ex.getMessage());
         Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error -> 
+        ex.getBindingResult().getFieldErrors().forEach(error ->
             errors.put(error.getField(), error.getDefaultMessage())
         );
-        
+
         ValidationErrorResponse errorResponse = new ValidationErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation failed",
@@ -58,7 +58,7 @@ public class GlobalExceptionHandler {
             String field = propertyPath.substring(propertyPath.lastIndexOf('.') + 1);
             errors.put(field, violation.getMessage());
         });
-        
+
         ValidationErrorResponse errorResponse = new ValidationErrorResponse(
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation failed",
@@ -67,7 +67,7 @@ public class GlobalExceptionHandler {
         );
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
-    
+
     // Handle favicon.ico requests to avoid error logs
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<Void> handleNoResourceFoundException(NoResourceFoundException ex, WebRequest request) {
@@ -75,7 +75,7 @@ public class GlobalExceptionHandler {
         if (request.getDescription(false).contains("favicon.ico")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
-        
+
         log.error("Resource not found: {}", ex.getMessage());
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.NOT_FOUND.value(),
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
         if (request.getDescription(false).contains("favicon.ico")) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
-        
+
         log.error("Unexpected error occurred", ex);
         ErrorResponse errorResponse = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),

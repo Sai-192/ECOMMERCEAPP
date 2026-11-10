@@ -17,14 +17,14 @@ import java.math.BigDecimal;
 public class OrderItemRequest {
     @NotBlank(message = "Product ID is required")
     private String productId;
-    
+
     @NotBlank(message = "Product name is required")
     private String name;
-    
+
     @NotNull(message = "Price is required")
     @Positive(message = "Price must be positive")
     private BigDecimal price;
-    
+
     @NotNull(message = "Quantity is required")
     @Positive(message = "Quantity must be positive")
     private Integer quantity;

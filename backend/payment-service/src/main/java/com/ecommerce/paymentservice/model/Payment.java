@@ -18,35 +18,35 @@ import java.time.LocalDateTime;
 public class Payment {
     @Id
     private String id;
-    
+
     private String orderId;
-    
+
     private String userId;
-    
+
     private BigDecimal amount;
-    
+
     @Enumerated(EnumType.STRING)
     private PaymentStatus status;
-    
+
     private String paymentMethod;
-    
+
     private String transactionId;
-    
+
     private LocalDateTime createdAt;
-    
+
     private LocalDateTime updatedAt;
-    
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = createdAt;
     }
-    
+
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-    
+
     public enum PaymentStatus {
         PENDING,
         PROCESSING,

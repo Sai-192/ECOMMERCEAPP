@@ -43,34 +43,34 @@ public class Order {
 
 
     private BigDecimal totalAmount;
-    
+
     private String paymentMethod;
-    
+
     private LocalDateTime createdAt;
-    
+
     private LocalDateTime updatedAt;
-    
+
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
-    
+
     // Helper method to add an item to the order
     public void addItem(OrderLineItem item) {
         items.add(item);
         item.setOrder(this);
     }
-    
+
     // Helper method to remove an item from the order
     public void removeItem(OrderLineItem item) {
         items.remove(item);
         item.setOrder(null);
     }
-    
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
         updatedAt = createdAt;
     }
-    
+
     @PreUpdate
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();

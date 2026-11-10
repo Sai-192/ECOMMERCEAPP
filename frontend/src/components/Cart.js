@@ -3,11 +3,11 @@ import { DollarSign } from 'lucide-react';
 
 const Cart = ({ cart, addToCart, removeFromCart, calculateTotal, placeOrder, products, isLoading }) => {
   const findProduct = (productId) => products.find(p => p.id === productId);
-  
+
   return (
     <div className="border rounded-lg shadow-sm p-4 sticky top-4">
       <h2 className="text-xl font-semibold mb-4">Your Cart</h2>
-      
+
       {cart.length === 0 ? (
         <p className="text-gray-500">Your cart is empty</p>
       ) : (
@@ -20,14 +20,14 @@ const Cart = ({ cart, addToCart, removeFromCart, calculateTotal, placeOrder, pro
                   <p className="text-sm text-gray-600">${item.price.toFixed(2)} × {item.quantity}</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button 
+                  <button
                     onClick={() => removeFromCart(item.productId)}
                     className="text-gray-500 hover:text-red-500"
                   >
                     -
                   </button>
                   <span>{item.quantity}</span>
-                  <button 
+                  <button
                     onClick={() => addToCart(findProduct(item.productId))}
                     className="text-gray-500 hover:text-green-500"
                   >
@@ -37,7 +37,7 @@ const Cart = ({ cart, addToCart, removeFromCart, calculateTotal, placeOrder, pro
               </div>
             ))}
           </div>
-          
+
           <div className="border-t pt-3 mb-4">
             <div className="flex justify-between font-semibold">
               <span>Total:</span>
@@ -45,7 +45,7 @@ const Cart = ({ cart, addToCart, removeFromCart, calculateTotal, placeOrder, pro
             </div>
             <p className="mt-2 text-sm text-gray-500">Payment method: PayPal (simulated)</p>
           </div>
-          
+
           <button
             onClick={placeOrder}
             disabled={isLoading}

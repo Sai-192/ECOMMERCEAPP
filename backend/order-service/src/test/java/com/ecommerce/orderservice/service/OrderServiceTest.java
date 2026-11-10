@@ -54,12 +54,12 @@ class OrderServiceTest {
         String userId = "test-user";
         Order order = createOrder(userId);
         order.setId(orderId);
-        
+
         when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
-        
+
         // Act
         OrderResponse response = orderService.getOrderById(orderId);
-        
+
         // Assert
         assertNotNull(response);
         assertEquals(orderId, response.getOrderId());
@@ -71,7 +71,7 @@ class OrderServiceTest {
         // Arrange
         String orderId = UUID.randomUUID().toString();
         when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
-        
+
         // Act & Assert
         assertThrows(OrderNotFoundException.class, () -> orderService.getOrderById(orderId));
     }
@@ -83,12 +83,12 @@ class OrderServiceTest {
         List<Order> userOrders = new ArrayList<>();
         userOrders.add(createOrder(userId));
         userOrders.add(createOrder(userId));
-        
+
         when(orderRepository.findByUserId(userId)).thenReturn(userOrders);
-        
+
         // Act
         List<OrderResponse> responses = orderService.getOrdersByUserId(userId);
-        
+
         // Assert
         assertNotNull(responses);
         assertEquals(2, responses.size());
@@ -103,14 +103,14 @@ class OrderServiceTest {
                 .price(new BigDecimal("10.99"))
                 .quantity(2)
                 .build();
-        
+
         OrderItemRequest item2 = OrderItemRequest.builder()
                 .productId("p2")
                 .name("Product 2")
                 .price(new BigDecimal("20.49"))
                 .quantity(1)
                 .build();
-        
+
         return OrderRequest.builder()
                 .userId(userId)
                 .items(List.of(item1, item2))
@@ -129,7 +129,7 @@ class OrderServiceTest {
                 .createdAt(LocalDateTime.now())
                 .updatedAt(LocalDateTime.now())
                 .build();
-        
+
         OrderLineItem item1 = OrderLineItem.builder()
                 .productId("p1")
                 .name("Product 1")
@@ -137,7 +137,7 @@ class OrderServiceTest {
                 .quantity(2)
                 .order(order)
                 .build();
-        
+
         OrderLineItem item2 = OrderLineItem.builder()
                 .productId("p2")
                 .name("Product 2")
@@ -145,9 +145,9 @@ class OrderServiceTest {
                 .quantity(1)
                 .order(order)
                 .build();
-        
+
         order.setItems(List.of(item1, item2));
-        
+
         return order;
     }
 }

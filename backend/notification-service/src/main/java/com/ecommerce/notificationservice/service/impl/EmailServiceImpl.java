@@ -16,23 +16,23 @@ import org.springframework.stereotype.Service;
 public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
-    
+
     @Value("${spring.mail.username}")
     private String fromEmail;
 
     @Override
     public void sendEmail(String to, String subject, String content) {
         log.info("Sending email to: {}", to);
-        
+
         try {
             MimeMessage message = mailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-            
+
             helper.setFrom(fromEmail);
             helper.setTo(to);
             helper.setSubject(subject);
             helper.setText(content, true); // true means content is HTML
-            
+
             mailSender.send(message);
             log.info("Email sent successfully to: {}", to);
         } catch (MessagingException e) {

@@ -78,12 +78,12 @@ public class ProductController {
             @PathVariable String productId,
             @Valid @RequestBody StockUpdateRequest stockUpdateRequest) {
         log.info("REST request to increase stock for product ID: {}", productId);
-        
+
         // Ensure productId in path and request body match
         if (!productId.equals(stockUpdateRequest.getProductId())) {
             stockUpdateRequest = new StockUpdateRequest(productId, stockUpdateRequest.getQuantity());
         }
-        
+
         ProductResponse response = productService.increaseStock(stockUpdateRequest);
         return ResponseEntity.ok(response);
     }
@@ -93,12 +93,12 @@ public class ProductController {
             @PathVariable String productId,
             @Valid @RequestBody StockUpdateRequest stockUpdateRequest) {
         log.info("REST request to decrease stock for product ID: {}", productId);
-        
+
         // Ensure productId in path and request body match
         if (!productId.equals(stockUpdateRequest.getProductId())) {
             stockUpdateRequest = new StockUpdateRequest(productId, stockUpdateRequest.getQuantity());
         }
-        
+
         ProductResponse response = productService.decreaseStock(stockUpdateRequest);
         return ResponseEntity.ok(response);
     }

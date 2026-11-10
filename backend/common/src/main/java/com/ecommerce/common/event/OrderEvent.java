@@ -18,23 +18,23 @@ import java.util.List;
 public class OrderEvent {
     @NotBlank
     private String orderId;
-    
+
     @NotBlank
     private String userId;
-    
+
     @NotEmpty
     private List<OrderItem> items;
-    
+
     @NotNull
     @Positive
     private BigDecimal totalAmount;
-    
+
     @NotBlank
     private String paymentMethod;
-    
+
     @NotNull
     private LocalDateTime timestamp;
-    
+
     @NotNull
     private OrderStatus status;
 

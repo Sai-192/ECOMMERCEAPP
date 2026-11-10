@@ -17,33 +17,33 @@ import java.time.LocalDateTime;
 public class Notification {
     @Id
     private String id;
-    
+
     private String userId;
-    
+
     private String recipientEmail;
-    
+
     private String subject;
-    
+
     @Column(length = 4000)
     private String content;
-    
+
     @Enumerated(EnumType.STRING)
     private NotificationType type;
-    
+
     @Enumerated(EnumType.STRING)
     private NotificationStatus status;
-    
+
     private String orderId;
-    
+
     private LocalDateTime createdAt;
-    
+
     private LocalDateTime sentAt;
-    
+
     @PrePersist
     protected void onCreate() {
         createdAt = LocalDateTime.now();
     }
-    
+
     public enum NotificationType {
         ORDER_CONFIRMATION,
         ORDER_SHIPPED,
@@ -52,7 +52,7 @@ public class Notification {
         PAYMENT_FAILURE,
         REFUND_ISSUED
     }
-    
+
     public enum NotificationStatus {
         PENDING,
         SENT,

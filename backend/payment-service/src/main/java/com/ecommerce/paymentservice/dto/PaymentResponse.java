@@ -14,25 +14,25 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PaymentResponse {
-    
+
     private String id;
-    
+
     private String orderId;
-    
+
     private String userId;
-    
+
     private BigDecimal amount;
-    
+
     private Payment.PaymentStatus status;
-    
+
     private String paymentMethod;
-    
+
     private String transactionId;
-    
+
     private LocalDateTime createdAt;
-    
+
     private LocalDateTime updatedAt;
-    
+
     // Masked card details for security
     private String maskedCardNumber;
 }

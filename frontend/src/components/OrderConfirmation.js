@@ -2,7 +2,7 @@ import React from 'react';
 
 const OrderConfirmation = ({ orderConfirmation, userEmail, resetOrder }) => {
   if (!orderConfirmation) return null;
-  
+
   return (
     <div className="bg-green-50 border border-green-200 rounded-lg p-6 mb-6">
       <h2 className="text-xl font-semibold text-green-800 mb-4">Order Confirmation</h2>
@@ -12,7 +12,7 @@ const OrderConfirmation = ({ orderConfirmation, userEmail, resetOrder }) => {
         <p>Estimated Delivery: {orderConfirmation.estimatedDelivery}</p>
       </div>
       <p className="mb-4">Thank you for your purchase! We've sent a confirmation email to {userEmail}.</p>
-      <button 
+      <button
         onClick={resetOrder}
         className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded"
       >

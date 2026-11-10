@@ -51,7 +51,7 @@ The application consists of the following components:
    ```bash
    cd backend
    mvn clean install
-   
+
    # Start each service in a separate terminal
    java -jar inventory-service/target/inventory-service-1.0-SNAPSHOT.jar
    java -jar order-service/target/order-service-1.0-SNAPSHOT.jar
@@ -68,7 +68,7 @@ The application consists of the following components:
 
 5. **Access the application**:
    - Frontend: http://localhost:3000
-   - Swagger UI (API Documentation): 
+   - Swagger UI (API Documentation):
      - Inventory Service: http://localhost:8082/swagger-ui.html
      - Order Service: http://localhost:8081/swagger-ui.html
      - Payment Service: http://localhost:8083/swagger-ui.html
@@ -108,7 +108,3 @@ CORS is configured to allow the frontend to communicate with the backend service
 ## Contributing
 
 Contributions are welcome! Please feel free to submit a Pull Request.
-
-## License
-
-This project is licensed under the [MIT License](LICENSE).

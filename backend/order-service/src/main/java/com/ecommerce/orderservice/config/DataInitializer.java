@@ -27,10 +27,10 @@ public class DataInitializer {
     public CommandLineRunner initDatabase() {
         return args -> {
             log.info("Starting order database initialization...");
-            
+
             if (orderRepository.count() == 0) {
                 log.info("No orders found. Adding sample orders.");
-                
+
                 // Create a completed order
                 Order completedOrder = Order.builder()
                     .id(UUID.randomUUID().toString())
@@ -41,7 +41,7 @@ public class DataInitializer {
                     .createdAt(LocalDateTime.now().minusDays(5))
                     .updatedAt(LocalDateTime.now().minusDays(4))
                     .build();
-                
+
                 OrderLineItem item1 = OrderLineItem.builder()
                     .productId(UUID.randomUUID().toString()) // This would need to match a real product ID in a real app
                     .name("Smartphone X")
@@ -49,7 +49,7 @@ public class DataInitializer {
                     .price(new BigDecimal("899.99"))
                     .order(completedOrder)
                     .build();
-                
+
                 OrderLineItem item2 = OrderLineItem.builder()
                     .productId(UUID.randomUUID().toString()) // This would need to match a real product ID in a real app
                     .name("Bluetooth Speaker")
@@ -57,7 +57,7 @@ public class DataInitializer {
                     .price(new BigDecimal("99.99"))
                     .order(completedOrder)
                     .build();
-                
+
                 // Add items using addItem method to ensure bidirectional relationship
                 completedOrder.addItem(item1);
                 completedOrder.addItem(item2);
@@ -72,7 +72,7 @@ public class DataInitializer {
                     .createdAt(LocalDateTime.now().minusDays(1))
                     .updatedAt(LocalDateTime.now().minusDays(1))
                     .build();
-                
+
                 OrderLineItem item3 = OrderLineItem.builder()
                     .productId(UUID.randomUUID().toString()) // This would need to match a real product ID in a real app
                     .name("Laptop Pro")
@@ -80,12 +80,12 @@ public class DataInitializer {
                     .price(new BigDecimal("1299.99"))
                     .order(pendingOrder)
                     .build();
-                
+
                 // Add item using addItem method to ensure bidirectional relationship
                 pendingOrder.addItem(item3);
-                
+
                 orderRepository.saveAll(List.of(completedOrder, pendingOrder));
-                log.info("Added sample orders with IDs: {} and {}", 
+                log.info("Added sample orders with IDs: {} and {}",
                          completedOrder.getId(), pendingOrder.getId());
             } else {
                 log.info("Orders already exist. Skipping initialization.");

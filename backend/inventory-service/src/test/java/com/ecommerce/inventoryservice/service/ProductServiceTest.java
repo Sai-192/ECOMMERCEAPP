@@ -54,13 +54,13 @@ class ProductServiceTest {
                 .stockQuantity(10)
                 .category("Electronics")
                 .build();
-        
+
         Product savedProduct = createProduct();
         when(productRepository.save(any(Product.class))).thenReturn(savedProduct);
-        
+
         // Act
         ProductResponse response = productService.createProduct(request);
-        
+
         // Assert
         assertNotNull(response);
         assertEquals(savedProduct.getId(), response.getId());
@@ -68,7 +68,7 @@ class ProductServiceTest {
         assertEquals(request.getPrice(), response.getPrice());
         assertEquals(request.getStockQuantity(), response.getStockQuantity());
         assertTrue(response.isInStock());
-        
+
         verify(productRepository).save(any(Product.class));
     }
 
@@ -78,17 +78,17 @@ class ProductServiceTest {
         String productId = UUID.randomUUID().toString();
         Product product = createProduct();
         product.setId(productId);
-        
+
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
-        
+
         // Act
         ProductResponse response = productService.getProductById(productId);
-        
+
         // Assert
         assertNotNull(response);
         assertEquals(productId, response.getId());
         assertEquals(product.getName(), response.getName());
-        
+
         verify(productRepository).findById(productId);
     }
 
@@ -97,7 +97,7 @@ class ProductServiceTest {
         // Arrange
         String productId = "nonexistent";
         when(productRepository.findById(productId)).thenReturn(Optional.empty());
-        
+
         // Act & Assert
         assertThrows(ProductNotFoundException.class, () -> productService.getProductById(productId));
         verify(productRepository).findById(productId);
@@ -108,17 +108,17 @@ class ProductServiceTest {
         // Arrange
         String productId = UUID.randomUUID().toString();
         StockUpdateRequest request = new StockUpdateRequest(productId, 5);
-        
+
         Product product = createProduct();
         product.setId(productId);
         product.setStockQuantity(10);
-        
+
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(product);
-        
+
         // Act
         ProductResponse response = productService.increaseStock(request);
-        
+
         // Assert
         assertEquals(15, response.getStockQuantity()); // 10 original + 5 increased
         verify(productRepository).findById(productId);
@@ -131,17 +131,17 @@ class ProductServiceTest {
         // Arrange
         String productId = UUID.randomUUID().toString();
         StockUpdateRequest request = new StockUpdateRequest(productId, 5);
-        
+
         Product product = createProduct();
         product.setId(productId);
         product.setStockQuantity(10);
-        
+
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(product);
-        
+
         // Act
         ProductResponse response = productService.decreaseStock(request);
-        
+
         // Assert
         assertEquals(5, response.getStockQuantity()); // 10 original - 5 decreased
         verify(productRepository).findById(productId);
@@ -154,54 +154,54 @@ class ProductServiceTest {
         // Arrange
         String productId = UUID.randomUUID().toString();
         StockUpdateRequest request = new StockUpdateRequest(productId, 15);
-        
+
         Product product = createProduct();
         product.setId(productId);
         product.setStockQuantity(10);
-        
+
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
-        
+
         // Act & Assert
         assertThrows(InsufficientStockException.class, () -> productService.decreaseStock(request));
         verify(productRepository).findById(productId);
         verify(productRepository, never()).save(any(Product.class));
     }
-    
+
     @Test
     void isInStock_WhenSufficientStock_ShouldReturnTrue() {
         // Arrange
         String productId = UUID.randomUUID().toString();
         int quantity = 5;
-        
+
         Product product = createProduct();
         product.setId(productId);
         product.setStockQuantity(10);
-        
+
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
-        
+
         // Act
         boolean result = productService.isInStock(productId, quantity);
-        
+
         // Assert
         assertTrue(result);
         verify(productRepository).findById(productId);
     }
-    
+
     @Test
     void isInStock_WhenInsufficientStock_ShouldReturnFalse() {
         // Arrange
         String productId = UUID.randomUUID().toString();
         int quantity = 15;
-        
+
         Product product = createProduct();
         product.setId(productId);
         product.setStockQuantity(10);
-        
+
         when(productRepository.findById(productId)).thenReturn(Optional.of(product));
-        
+
         // Act
         boolean result = productService.isInStock(productId, quantity);
-        
+
         // Assert
         assertFalse(result);
         verify(productRepository).findById(productId);

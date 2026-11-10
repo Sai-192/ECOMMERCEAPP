@@ -9,10 +9,10 @@ import java.util.Optional;
 
 @Repository
 public interface PaymentRepository extends JpaRepository<Payment, String> {
-    
+
     List<Payment> findByOrderId(String orderId);
-    
+
     List<Payment> findByUserId(String userId);
-    
+
     Optional<Payment> findByOrderIdAndStatus(String orderId, Payment.PaymentStatus status);
 }

@@ -26,7 +26,7 @@ public class OrderEventConsumer {
     )
     public void consumeOrderEvent(OrderEvent orderEvent) {
         log.info("Received order event: {}, status: {}", orderEvent.getOrderId(), orderEvent.getStatus());
-        
+
         switch (orderEvent.getStatus()) {
             case CREATED:
                 sendOrderCreatedNotification(orderEvent);
@@ -47,16 +47,16 @@ public class OrderEventConsumer {
                 log.info("No notification needed for order status: {}", orderEvent.getStatus());
         }
     }
-    
+
     private void sendOrderCreatedNotification(OrderEvent orderEvent) {
         log.info("Sending order created notification for order: {}", orderEvent.getOrderId());
-        
+
         // For demo purposes, we're using a dummy email
         String recipientEmail = "customer@example.com";
-        
+
         // Create order details string
         String orderDetails = buildOrderDetailsHtml(orderEvent);
-        
+
         notificationService.sendOrderConfirmation(
                 orderEvent.getOrderId(),
                 orderEvent.getUserId(),
@@ -64,13 +64,13 @@ public class OrderEventConsumer {
                 orderDetails
         );
     }
-    
+
     private void sendOrderShippedNotification(OrderEvent orderEvent) {
         log.info("Sending order shipped notification for order: {}", orderEvent.getOrderId());
-        
+
         // For demo purposes, we're using a dummy email
         String recipientEmail = "customer@example.com";
-        
+
         // Create a notification for order shipped
         notificationService.processEventNotification(
                 "ORDER_SHIPPED",
@@ -80,13 +80,13 @@ public class OrderEventConsumer {
                 "Your order has been shipped and is on its way!"
         );
     }
-    
+
     private void sendOrderDeliveredNotification(OrderEvent orderEvent) {
         log.info("Sending order delivered notification for order: {}", orderEvent.getOrderId());
-        
+
         // For demo purposes, we're using a dummy email
         String recipientEmail = "customer@example.com";
-        
+
         // Create a notification for order delivered
         notificationService.processEventNotification(
                 "ORDER_DELIVERED",
@@ -96,13 +96,13 @@ public class OrderEventConsumer {
                 "Your order has been delivered. Thank you for shopping with us!"
         );
     }
-    
+
     private void sendOrderCancelledNotification(OrderEvent orderEvent) {
         log.info("Sending order cancelled notification for order: {}", orderEvent.getOrderId());
-        
+
         // For demo purposes, we're using a dummy email
         String recipientEmail = "customer@example.com";
-        
+
         // Create a notification for order cancelled
         notificationService.processEventNotification(
                 "ORDER_CANCELLED",
@@ -112,18 +112,18 @@ public class OrderEventConsumer {
                 "Your order has been cancelled."
         );
     }
-    
+
     private String buildOrderDetailsHtml(OrderEvent orderEvent) {
         StringBuilder sb = new StringBuilder();
         sb.append("<table border='1' cellpadding='5' cellspacing='0' style='border-collapse: collapse;'>");
         sb.append("<tr><th>Product</th><th>Quantity</th><th>Price</th><th>Subtotal</th></tr>");
-        
+
         BigDecimal total = BigDecimal.ZERO;
-        
+
         for (OrderItem item : orderEvent.getItems()) {
             BigDecimal subtotal = item.getPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
             total = total.add(subtotal);
-            
+
             sb.append("<tr>");
             sb.append("<td>").append(item.getName()).append("</td>");
             sb.append("<td>").append(item.getQuantity()).append("</td>");
@@ -131,11 +131,11 @@ public class OrderEventConsumer {
             sb.append("<td>$").append(subtotal).append("</td>");
             sb.append("</tr>");
         }
-        
+
         sb.append("<tr><td colspan='3' align='right'><strong>Total:</strong></td><td>$")
                 .append(total).append("</td></tr>");
         sb.append("</table>");
-        
+
         return sb.toString();
     }
 }

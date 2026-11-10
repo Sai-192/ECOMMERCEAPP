@@ -20,15 +20,15 @@ import java.util.List;
 public class OrderRequest {
     @NotBlank(message = "User ID is required")
     private String userId;
-    
+
     @NotEmpty(message = "Order must have at least one item")
     @Valid
     private List<OrderItemRequest> items;
-    
+
     @NotNull(message = "Total amount is required")
     @Positive(message = "Total amount must be positive")
     private BigDecimal totalAmount;
-    
+
     @NotBlank(message = "Payment method is required")
     private String paymentMethod;
 }

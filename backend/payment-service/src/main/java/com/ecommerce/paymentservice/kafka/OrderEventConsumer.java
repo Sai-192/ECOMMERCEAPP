@@ -23,7 +23,7 @@ public class OrderEventConsumer {
     )
     public void consumeOrderEvent(OrderEvent orderEvent) {
         log.info("Received order event: {}, status: {}", orderEvent.getOrderId(), orderEvent.getStatus());
-        
+
         switch (orderEvent.getStatus()) {
             case CREATED:
                 // When order is created, process payment
@@ -37,10 +37,10 @@ public class OrderEventConsumer {
                 log.info("No payment action needed for order status: {}", orderEvent.getStatus());
         }
     }
-    
+
     private void handleOrderCreated(OrderEvent orderEvent) {
         log.info("Processing payment for new order: {}", orderEvent.getOrderId());
-        
+
         // Create PaymentRequest from OrderEvent
         PaymentRequest paymentRequest = PaymentRequest.builder()
                 .orderId(orderEvent.getOrderId())
@@ -48,7 +48,7 @@ public class OrderEventConsumer {
                 .amount(orderEvent.getTotalAmount())
                 .paymentMethod(orderEvent.getPaymentMethod())
                 .build();
-        
+
         try {
             // Process payment
             paymentService.processPayment(paymentRequest);
@@ -58,35 +58,35 @@ public class OrderEventConsumer {
             // In a real system, we might publish a payment failure event to trigger compensation
         }
     }
-    
+
     private void handleOrderCancelled(OrderEvent orderEvent) {
         log.info("Checking for refund needs for cancelled order: {}", orderEvent.getOrderId());
-        
+
         // In a real system, we would have a more sophisticated refund flow
         // For now, we'll just log that the order was cancelled
-        
+
         // We could get the latest payment for the order and refund it if it's been processed
         try {
             // Get all payments for the order
             var payments = paymentService.getPaymentsByOrderId(orderEvent.getOrderId());
-            
+
             // Find completed payments that could be refunded
             payments.stream()
                     .filter(payment -> "COMPLETED".equals(payment.getStatus().name()))
                     .findFirst()
                     .ifPresent(payment -> {
-                        log.info("Initiating refund for payment: {} of cancelled order: {}", 
+                        log.info("Initiating refund for payment: {} of cancelled order: {}",
                                  payment.getId(), orderEvent.getOrderId());
                         try {
                             paymentService.refundPayment(payment.getId());
                             log.info("Refund processed for cancelled order: {}", orderEvent.getOrderId());
                         } catch (Exception e) {
-                            log.error("Failed to process refund for cancelled order: {}", 
+                            log.error("Failed to process refund for cancelled order: {}",
                                      orderEvent.getOrderId(), e);
                         }
                     });
         } catch (Exception e) {
-            log.error("Error checking refund needs for cancelled order: {}", 
+            log.error("Error checking refund needs for cancelled order: {}",
                      orderEvent.getOrderId(), e);
         }
     }

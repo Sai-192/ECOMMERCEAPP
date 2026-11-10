@@ -25,20 +25,20 @@ public class NotificationServiceImpl implements NotificationService {
     @Transactional
     public Notification sendNotification(Notification notification) {
         log.info("Sending notification: {}", notification.getType());
-        
+
         // Set generated ID if not provided
         if (notification.getId() == null) {
             notification.setId(UUID.randomUUID().toString());
         }
-        
+
         // Set status to PENDING if not set
         if (notification.getStatus() == null) {
             notification.setStatus(Notification.NotificationStatus.PENDING);
         }
-        
+
         // Save notification before sending
         Notification savedNotification = notificationRepository.save(notification);
-        
+
         try {
             // Send the email
             emailService.sendEmail(
@@ -46,17 +46,17 @@ public class NotificationServiceImpl implements NotificationService {
                     notification.getSubject(),
                     notification.getContent()
             );
-            
+
             // Update notification status to SENT
             savedNotification.setStatus(Notification.NotificationStatus.SENT);
             savedNotification.setSentAt(LocalDateTime.now());
-            
+
             log.info("Notification sent successfully: {}", savedNotification.getId());
         } catch (Exception e) {
             log.error("Failed to send notification: {}", savedNotification.getId(), e);
             savedNotification.setStatus(Notification.NotificationStatus.FAILED);
         }
-        
+
         // Save the updated notification
         return notificationRepository.save(savedNotification);
     }
@@ -64,10 +64,10 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public Notification sendOrderConfirmation(String orderId, String userId, String recipientEmail, String orderDetails) {
         log.info("Creating order confirmation notification for order: {}", orderId);
-        
+
         String subject = "Order Confirmation - Your order has been placed";
         String content = buildOrderConfirmationEmail(orderId, orderDetails);
-        
+
         Notification notification = Notification.builder()
                 .id(UUID.randomUUID().toString())
                 .userId(userId)
@@ -78,17 +78,17 @@ public class NotificationServiceImpl implements NotificationService {
                 .status(Notification.NotificationStatus.PENDING)
                 .orderId(orderId)
                 .build();
-        
+
         return sendNotification(notification);
     }
 
     @Override
     public Notification sendPaymentConfirmation(String orderId, String userId, String recipientEmail, String paymentDetails) {
         log.info("Creating payment confirmation notification for order: {}", orderId);
-        
+
         String subject = "Payment Confirmation - Your payment has been processed";
         String content = buildPaymentConfirmationEmail(orderId, paymentDetails);
-        
+
         Notification notification = Notification.builder()
                 .id(UUID.randomUUID().toString())
                 .userId(userId)
@@ -99,17 +99,17 @@ public class NotificationServiceImpl implements NotificationService {
                 .status(Notification.NotificationStatus.PENDING)
                 .orderId(orderId)
                 .build();
-        
+
         return sendNotification(notification);
     }
 
     @Override
     public Notification sendPaymentFailure(String orderId, String userId, String recipientEmail, String failureReason) {
         log.info("Creating payment failure notification for order: {}", orderId);
-        
+
         String subject = "Payment Failed - Action Required";
         String content = buildPaymentFailureEmail(orderId, failureReason);
-        
+
         Notification notification = Notification.builder()
                 .id(UUID.randomUUID().toString())
                 .userId(userId)
@@ -120,7 +120,7 @@ public class NotificationServiceImpl implements NotificationService {
                 .status(Notification.NotificationStatus.PENDING)
                 .orderId(orderId)
                 .build();
-        
+
         return sendNotification(notification);
     }
 
@@ -139,7 +139,7 @@ public class NotificationServiceImpl implements NotificationService {
     @Override
     public Notification processEventNotification(String eventType, String orderId, String userId, String recipientEmail, String details) {
         log.info("Processing event notification type: {} for order: {}", eventType, orderId);
-        
+
         switch (eventType) {
             case "ORDER_CREATED":
                 return sendOrderConfirmation(orderId, userId, recipientEmail, details);
@@ -152,7 +152,7 @@ public class NotificationServiceImpl implements NotificationService {
                 return null;
         }
     }
-    
+
     // Helper methods to build email content
     private String buildOrderConfirmationEmail(String orderId, String orderDetails) {
         StringBuilder sb = new StringBuilder();
@@ -167,7 +167,7 @@ public class NotificationServiceImpl implements NotificationService {
         sb.append("</body></html>");
         return sb.toString();
     }
-    
+
     private String buildPaymentConfirmationEmail(String orderId, String paymentDetails) {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><body>");
@@ -180,7 +180,7 @@ public class NotificationServiceImpl implements NotificationService {
         sb.append("</body></html>");
         return sb.toString();
     }
-    
+
     private String buildPaymentFailureEmail(String orderId, String failureReason) {
         StringBuilder sb = new StringBuilder();
         sb.append("<html><body>");

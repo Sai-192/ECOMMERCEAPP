@@ -13,7 +13,7 @@ public interface OrderService {
      * @return the created order
      */
     OrderResponse createOrder(OrderRequest orderRequest);
-    
+
     /**
      * Retrieves an order by its ID
      *
@@ -21,7 +21,7 @@ public interface OrderService {
      * @return the order if found
      */
     OrderResponse getOrderById(String orderId);
-    
+
     /**
      * Retrieves all orders for a user
      *
@@ -29,7 +29,7 @@ public interface OrderService {
      * @return list of orders
      */
     List<OrderResponse> getOrdersByUserId(String userId);
-    
+
     /**
      * Retrieves all orders in the system
      *

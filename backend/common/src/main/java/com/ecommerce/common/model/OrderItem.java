@@ -17,14 +17,14 @@ import java.math.BigDecimal;
 public class OrderItem {
     @NotBlank
     private String productId;
-    
+
     @NotBlank
     private String name;
-    
+
     @NotNull
     @Positive
     private BigDecimal price;
-    
+
     @NotNull
     @Positive
     private Integer quantity;

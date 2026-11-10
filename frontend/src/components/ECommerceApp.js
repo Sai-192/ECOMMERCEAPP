@@ -34,32 +34,32 @@ const ECommerceApp = () => {
 
   const addToCart = (product) => {
     const existingItem = cart.find(item => item.productId === product.id);
-    
+
     if (existingItem) {
-      setCart(cart.map(item => 
-        item.productId === product.id 
-          ? { ...item, quantity: item.quantity + 1 } 
+      setCart(cart.map(item =>
+        item.productId === product.id
+          ? { ...item, quantity: item.quantity + 1 }
           : item
       ));
     } else {
-      setCart([...cart, { 
-        productId: product.id, 
-        name: product.name, 
-        price: product.price, 
-        quantity: 1 
+      setCart([...cart, {
+        productId: product.id,
+        name: product.name,
+        price: product.price,
+        quantity: 1
       }]);
     }
   };
 
   const removeFromCart = (productId) => {
     const existingItem = cart.find(item => item.productId === productId);
-    
+
     if (existingItem.quantity === 1) {
       setCart(cart.filter(item => item.productId !== productId));
     } else {
-      setCart(cart.map(item => 
-        item.productId === productId 
-          ? { ...item, quantity: item.quantity - 1 } 
+      setCart(cart.map(item =>
+        item.productId === productId
+          ? { ...item, quantity: item.quantity - 1 }
           : item
       ));
     }
@@ -71,14 +71,14 @@ const ECommerceApp = () => {
 
   const handlePlaceOrder = async () => {
     if (cart.length === 0) return;
-    
+
     const orderDetails = {
       userId: user.id,
       items: cart,
       totalAmount: calculateTotal(),
       paymentMethod: 'PayPal'
     };
-    
+
     try {
       setLoading(true);
       setError(null);
@@ -128,24 +128,24 @@ const ECommerceApp = () => {
       {error && <p role="alert" className="mb-4 text-red-600">{error}</p>}
 
       {orderPlaced ? (
-        <OrderConfirmation 
-          orderConfirmation={orderConfirmation} 
-          userEmail={user.email} 
-          resetOrder={resetOrder} 
+        <OrderConfirmation
+          orderConfirmation={orderConfirmation}
+          userEmail={user.email}
+          resetOrder={resetOrder}
         />
       ) : (
         <div className="flex flex-col md:flex-row gap-6">
           <div className="md:w-2/3">
             <ProductList products={products} addToCart={addToCart} />
           </div>
-          
+
           <div className="md:w-1/3">
-            <Cart 
-              cart={cart} 
-              addToCart={addToCart} 
-              removeFromCart={removeFromCart} 
-              calculateTotal={calculateTotal} 
-              placeOrder={handlePlaceOrder} 
+            <Cart
+              cart={cart}
+              addToCart={addToCart}
+              removeFromCart={removeFromCart}
+              calculateTotal={calculateTotal}
+              placeOrder={handlePlaceOrder}
               products={products}
               isLoading={loading}
             />

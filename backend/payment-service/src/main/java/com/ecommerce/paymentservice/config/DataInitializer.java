@@ -25,10 +25,10 @@ public class DataInitializer {
     public CommandLineRunner initDatabase() {
         return args -> {
             log.info("Starting payment database initialization...");
-            
+
             if (paymentRepository.count() == 0) {
                 log.info("No payments found. Adding sample payments.");
-                
+
                 // Create a completed payment
                 Payment completedPayment = Payment.builder()
                     .id(UUID.randomUUID().toString())
@@ -41,7 +41,7 @@ public class DataInitializer {
                     .createdAt(LocalDateTime.now().minusDays(4))
                     .updatedAt(LocalDateTime.now().minusDays(4))
                     .build();
-                
+
                 // Create a pending payment
                 Payment pendingPayment = Payment.builder()
                     .id(UUID.randomUUID().toString())
@@ -54,7 +54,7 @@ public class DataInitializer {
                     .createdAt(LocalDateTime.now().minusDays(1))
                     .updatedAt(LocalDateTime.now().minusDays(1))
                     .build();
-                
+
                 // Create a failed payment
                 Payment failedPayment = Payment.builder()
                     .id(UUID.randomUUID().toString())
@@ -67,9 +67,9 @@ public class DataInitializer {
                     .createdAt(LocalDateTime.now().minusDays(3))
                     .updatedAt(LocalDateTime.now().minusDays(3))
                     .build();
-                
+
                 paymentRepository.saveAll(List.of(completedPayment, pendingPayment, failedPayment));
-                log.info("Added sample payments with IDs: {}, {}, and {}", 
+                log.info("Added sample payments with IDs: {}, {}, and {}",
                          completedPayment.getId(), pendingPayment.getId(), failedPayment.getId());
             } else {
                 log.info("Payments already exist. Skipping initialization.");

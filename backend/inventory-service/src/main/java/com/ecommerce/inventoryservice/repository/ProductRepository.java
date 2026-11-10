@@ -12,23 +12,23 @@ import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, String> {
-    
+
     /**
      * Find a product by ID with a pessimistic write lock to prevent concurrent updates
      */
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<Product> findById(String id);
-    
+
     /**
      * Find products by category
      */
     List<Product> findByCategory(String category);
-    
+
     /**
      * Find products with stock less than the specified quantity
      */
     List<Product> findByStockQuantityLessThan(Integer quantity);
-    
+
     /**
      * Search products by name or description containing the given keyword
      */

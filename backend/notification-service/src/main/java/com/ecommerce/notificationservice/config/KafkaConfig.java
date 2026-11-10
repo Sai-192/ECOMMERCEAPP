@@ -52,7 +52,7 @@ public class KafkaConfig {
         factory.setConsumerFactory(orderEventConsumerFactory());
         return factory;
     }
-    
+
     // Payment Event Consumer Configuration
     @Bean
     public ConsumerFactory<String, Map<String, Object>> paymentEventConsumerFactory() {
@@ -71,7 +71,7 @@ public class KafkaConfig {
         factory.setConsumerFactory(paymentEventConsumerFactory());
         return factory;
     }
-    
+
     // Inventory Event Consumer Configuration
     @Bean
     public ConsumerFactory<String, Map<String, Object>> inventoryEventConsumerFactory() {

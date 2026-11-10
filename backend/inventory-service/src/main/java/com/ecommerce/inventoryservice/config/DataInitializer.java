@@ -24,10 +24,10 @@ public class DataInitializer {
     public CommandLineRunner initDatabase() {
         return args -> {
             log.info("Starting database initialization...");
-            
+
             if (productRepository.count() == 0) {
                 log.info("No products found. Adding sample products.");
-                
+
                 List<Product> sampleProducts = List.of(
                     Product.builder()
                         .id(UUID.randomUUID().toString())
@@ -39,7 +39,7 @@ public class DataInitializer {
                         .createdAt(LocalDateTime.now())
                         .updatedAt(LocalDateTime.now())
                         .build(),
-                        
+
                     Product.builder()
                         .id(UUID.randomUUID().toString())
                         .name("Laptop Pro")
@@ -50,7 +50,7 @@ public class DataInitializer {
                         .createdAt(LocalDateTime.now())
                         .updatedAt(LocalDateTime.now())
                         .build(),
-                        
+
                     Product.builder()
                         .id(UUID.randomUUID().toString())
                         .name("Wireless Headphones")
@@ -61,7 +61,7 @@ public class DataInitializer {
                         .createdAt(LocalDateTime.now())
                         .updatedAt(LocalDateTime.now())
                         .build(),
-                        
+
                     Product.builder()
                         .id(UUID.randomUUID().toString())
                         .name("Smart Watch")
@@ -72,7 +72,7 @@ public class DataInitializer {
                         .createdAt(LocalDateTime.now())
                         .updatedAt(LocalDateTime.now())
                         .build(),
-                        
+
                     Product.builder()
                         .id(UUID.randomUUID().toString())
                         .name("Bluetooth Speaker")
@@ -84,7 +84,7 @@ public class DataInitializer {
                         .updatedAt(LocalDateTime.now())
                         .build()
                 );
-                
+
                 productRepository.saveAll(sampleProducts);
                 log.info("Added {} sample products", sampleProducts.size());
             } else {
