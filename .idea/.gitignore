@@ -1,0 +1,16 @@
+# Ignore build output directories
+**/target/
+
+# Ignore Node modules directories
+**/node_modules/
+
+# Optionally ignore package-lock.json and yarn.lock
+**/package-lock.json
+**/yarn.lock
+
+# Ignore IntelliJ IDEA project files and settings
+*.iml
+.idea/
+
+# Optionally ignore macOS system files
+.DS_Store
